@@ -136,7 +136,7 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder ,orderT
             disabled={cartItems.length === 0}
             className="pl-1 md:pl-0 w-full  bg-gradient-to-r from-orange-400 to-orange-500
              py-1 md:py-3 rounded-xl  text-sm font-semibold 
-             hover:opacity-80 transition disabled:opacity-40"
+             hover:opacity-80 transition active:scale-97 disabled:opacity-40"
           >
             Place Order
           </button>

@@ -7,7 +7,7 @@ import img10 from '../assets/mainPage/img10.svg'
 import noodleWithOmlet from '../assets/mainPage/noodle-with-omlet.svg'
 import searchIcon from '../assets/img/search.svg'
 
-const HomePage = ({ onViewOrder, onAddToCart, count, showCart , orderType , setOrderType}) => {
+const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrderType, cartItems }) => {
 
   const [isOpen, setIsOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
@@ -43,7 +43,12 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart , orderType , setO
   )
 
   const visibleDishes =
-  activeCategory === "today" ? filteredDishes : [];
+    activeCategory === "today" ? filteredDishes : [];
+
+  const isDishInCart = (dishId) => {
+    return cartItems.some(item => item.id === dishId);
+  };
+
 
 
   return (
@@ -82,12 +87,26 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart , orderType , setO
       {/* buttons */}
       <div className='overflow-x-auto no-scrollbar'>
         <nav className='flex flex-row  mt-6 border-b border-[#2f354a] gap-6'>
-          
-          <button className='pb-4 hover:border-b shrink-0 '>Today Special</button>
-           <button className='pb-4 hover:border-b shrink-0 '>Our Special</button>
-          <button className='pb-4 hover:border-b shrink-0'>South Indian Special</button>
-        
-          
+
+          <button
+            onClick={() => setActiveCategory("today")}
+            className={`pb-4 shrink-0 transition ${activeCategory === "today"
+                ? "border-b-2 border-orange-500 text-orange-400"
+                : "hover:border-b"}`}
+          >Today Special</button>
+
+          <button onClick={() => setActiveCategory("special")}
+            className={`pb-4 shrink-0 transition ${activeCategory === "special"
+                ? "border-b-2 border-orange-500 text-orange-400"
+                : "hover:border-b"
+              }`}>Our Special</button>
+
+          <button onClick={() => setActiveCategory("south")}
+            className={`pb-4 shrink-0 transition ${activeCategory === "south"
+                ? "border-b-2 border-orange-500 text-orange-400"
+                : "hover:border-b"
+              }`}>South Indian Special</button>
+
         </nav>
       </div>
 
@@ -138,15 +157,23 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart , orderType , setO
       <div className="mt-6 flex-1 overflow-y-auto pr-2 no-scrollbar">
         <div className={`grid grid-cols-2 sm:grid-cols-2 gap-4 sm:gap-6
           ${showCart ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-3 lg:grid-cols-4"}`}>
-          
-          {filteredDishes.length === 0 ? (
+
+          {visibleDishes.length === 0 ? (
             <p className="text-gray-400 col-span-full text-center">
               No dishes found
             </p>
           ) : (
-            filteredDishes.map(item => (
-              <div key={item.id} className="bg-[#2a2f42] rounded-2xl p-4 text-center">
-                <img src={item.img} alt={item.name} className="mx-auto h-36 sm:h-44 object-contain" />
+            visibleDishes.map(item => (
+              <div  key={item.id}
+  className={`relative rounded-2xl p-4 text-center transition-all duration-300
+    bg-[#2a2f42]
+  `}      >
+   {isDishInCart (item .id) && (
+    <span className='absolute top-5 right-5 w-3 h-3 rounded-full bg-green-400 shadow-[0_0_6px_rgba(34,197,94,0.08)] '>
+
+    </span>
+   )}
+              <img src={item.img} alt={item.name} className="mx-auto h-36 sm:h-44 object-contain" />
 
                 <h3 className="mt-4 font-medium">{item.name}</h3>
                 <p className="text-green-400 mt-2">{item.price.toFixed(2)} AED</p>
@@ -159,8 +186,8 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart , orderType , setO
                       onClick={() => handleSizeChange(item.id, size)}
                       className={`px-3 py-1 rounded-lg border text-sm
                       ${selectedSize[item.id] === size
-                        ? "bg-orange-500 border-orange-500"
-                        : "border-[#3a405a]"}`}
+                          ? "bg-orange-500 border-orange-500"
+                          : "border-[#3a405a]"}`}
                     >
                       {size}
                     </button>
@@ -170,10 +197,10 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart , orderType , setO
                 <button
                   disabled={item.bowls === 0}
                   onClick={() => onAddToCart(item, selectedSize[item.id])}
-                  className={`mt-3 w-full py-2 rounded-lg font-semibold
+                  className={`mt-3 w-full py-2 rounded-lg font-semibold transition active:scale-97
                   ${item.bowls === 0
-                    ? "bg-gray-600 cursor-not-allowed"
-                    : "bg-orange-500 hover:opacity-90"}`}
+                      ? "bg-gray-600 cursor-not-allowed"
+                      : "bg-orange-500 hover:opacity-90"}`}
                 >
                   {item.bowls === 0 ? "Sold Out" : "Add to Order"}
                 </button>
@@ -192,7 +219,7 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart , orderType , setO
           hover:opacity-93 "
       >
         <FiShoppingCart className="text-white text-2xl" />
-          {count > 0 && (
+        {count > 0 && (
           <span className="absolute -top-0 -right-0 bg-orange-600
           text-xs w-5 h-5 flex items-center justify-center rounded-full">
             {count}

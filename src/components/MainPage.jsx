@@ -80,6 +80,7 @@ const MainPage = () => {
               count={cartItems.reduce((a, c) => a + c.qty, 0)}
               orderType = { orderType }
               setOrderType = { setOrderType }
+              cartItems = { cartItems }
             />
             </div>
           
