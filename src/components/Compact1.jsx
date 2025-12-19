@@ -62,7 +62,7 @@ const Compact1 = () => {
             onClick={toHomepage}
             className="w-[370px] h-[54px] flex items-center justify-center gap-[12px] 
               rounded-[7.27px] p-[16px] bg-[#F99147] 
-              shadow-[0px_4px_20px_0px_#EA7C693D] hover:bg-[#e67e30] transition"
+              shadow-[0px_4px_20px_0px_#EA7C693D] hover:bg-[#e67e30] transition active:scale-97"
           >
             Explore Menu
           </button>
