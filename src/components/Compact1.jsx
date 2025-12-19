@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import frontPageBg from '../assets/frontPageBg.png'
+import frontPageBG from '../assets/frontPageBG.png'
 import ChefLogo from '../assets/ChefLogo.png'
 import ttt from '../assets/img/ttt.svg'
 
@@ -19,7 +19,7 @@ const Compact1 = () => {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src={frontPageBg}
+            src={frontPageBG}
             alt="Fruit bowl splash"
             className="w-full h-full object-cover opacity-50 blur-xs"
           />
