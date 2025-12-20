@@ -91,7 +91,7 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
       </div>
 
       {/* Choose Dishes */}
-      <div className="flex items-center justify-between mt-6">
+      <div className="flex items-center justify-between mt-3">
         <h2 className="text-xl font-semibold">Choose Dishes</h2>
 
         <div className="relative">

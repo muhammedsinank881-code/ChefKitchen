@@ -24,7 +24,7 @@ const SideBar = () => {
     <nav className="hidden md:flex w-24 min-h-screen bg-[#1F1D2B] flex-col items-center py-6 gap-6 fixed">
       
       {/* Logo */}
-      <div className="w-10 h-10 flex items-center justify-center">
+      <div className=" w-10 h-10 flex items-center justify-center">
         <img src={Vector} alt="Chef Kitchen Logo" className="object-contain" />
       </div>
 
@@ -36,7 +36,7 @@ const SideBar = () => {
         >
           <button
             onClick={() => setActiveIndex(index)}
-            className={`rounded-l-2xl relative w-full h-18 flex items-center justify-center
+            className={`cursor-pointer rounded-l-2xl relative w-full h-18 flex items-center justify-center
               ${index === activeIndex ? 'bg-[#1f2433]' : ''}`}
           >
            
