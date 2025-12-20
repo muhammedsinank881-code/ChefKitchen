@@ -1,59 +1,73 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Vector from '../assets/Logo.png'
-import img1 from '../assets/img/img1.svg'
-import img2 from '../assets/img/img2.svg'
-import img3 from '../assets/img/img3.svg'
-import img4 from '../assets/img/img4.svg'
-import img5 from '../assets/img/img5.svg'
+import HomeIcon from '../assets/icons/HomeIcon.jsx'
+import CouponIcon from '../assets/icons/CouponIcon.jsx'
+import WhiteListIcon from '../assets/icons/WhiteListIcon.jsx'
+import EmailIcon from '../assets/icons/EmailIcon.jsx'
+import NotificationIcon from '../assets/icons/NotificationIcon.jsx'
 import exit from '../assets/img/exit.svg'
 import { useNavigate } from 'react-router-dom'
 
 const SideBar = () => {
+  const buttonCollection = [
+    HomeIcon,
+    CouponIcon,
+    WhiteListIcon,
+    EmailIcon,
+    NotificationIcon,
+  ]
 
+  const [activeIndex, setActiveIndex] = useState(1)
   const navigate = useNavigate()
-  const toExit = () => {
-    navigate ("/")
-  } 
+
   return (
-    <>
-      <nav className=" hidden md:flex w-[72px] h-screen bg-[#1F1D2B] flex-col items-center py-6 gap-6 
-                    border border-transparent
-                     transition-all duration-300 fixed float-left">
-        {/* logo */}
-        <div className="w-[38.8px] h-[38.8px] flex items-center justify-center">
-          <img src={Vector} alt="Chef Kitchen Logo"
-            className=" object-contain " />
+    <nav className="hidden md:flex w-24 min-h-screen bg-[#1F1D2B] flex-col items-center py-6 gap-6 fixed">
+      
+      {/* Logo */}
+      <div className="w-10 h-10 flex items-center justify-center">
+        <img src={Vector} alt="Chef Kitchen Logo" className="object-contain" />
+      </div>
+
+      {/* Buttons */}
+      {buttonCollection.map((Icon, index) => (
+        <div
+          key={index}
+          className="rounded-l-2xl relative w-full pl-2 h-18 flex items-center justify-center"
+        >
+          <button
+            onClick={() => setActiveIndex(index)}
+            className={`rounded-l-2xl relative w-full h-18 flex items-center justify-center
+              ${index === activeIndex ? 'bg-[#1f2433]' : ''}`}
+          >
+           
+            <Icon
+              className={`w-5 h-5 ${
+                index === activeIndex ? 'text-white' : 'text-[#F99147]'
+              }`}
+            />
+            {index === activeIndex && (
+              <>
+                <span className="w-5 h-5 bg-[#1F1D2B] z-20 absolute -top-5 right-0 rounded-br-2xl" />
+                <span className="w-5 h-5 bg-[#1f2433] absolute -top-5 right-0" />
+
+                <span className="w-5 h-5 bg-[#1F1D2B] z-20 absolute -bottom-5 right-0 rounded-tr-2xl" />
+                <span className="w-5 h-5 bg-[#1f2433] absolute -bottom-5 right-0" />
+              </>
+            )}
+          </button>
         </div>
+      ))}
 
-        {/* buttons */}
-        <div className='flex flex-col'>
-          <div className='flex items-center justify-center hover:bg-[#1f2433] px-4 py-7 rounded-xl '>
-          <img src={img1} alt="logo 1" 
-          className=''/>
-          </div>
-          <div className='flex  items-center justify-center hover:bg-[#1f2433] px-4 py-7 rounded-xl '>
-          <img src={img2} alt="logo 2" />
-          </div>
-          <div className='flex  items-center justify-center hover:bg-[#1f2433] px-4 py-7 rounded-xl '>
-          <img src={img3} alt=" logo 3" />
-          </div>
-          <div className='flex  items-center justify-center hover:bg-[#1f2433] px-4 py-7 rounded-xl'>
-          <img src={img4} alt='logo4' />
-          </div>
-          <div className='flex  items-center justify-center hover:bg-[#1f2433] px-4 py-7 rounded-xl'>
-          <img src={img5} alt="logo 5" />
-          </div>
-
-
-        </div>
-        <div className='flex items-center justify-center hover:bg-[#1f2433] px-4 py-5 rounded-xl mt-auto pb-4'>
-          <button onClick={toExit}>
+      {/* Exit */}
+      <div className="mt-auto pb-4">
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center justify-center hover:bg-[#1f2433] px-4 py-5 rounded-xl"
+        >
           <img src={exit} alt="exit" />
-          </button> 
-        </div>
-
-      </nav>
-    </>
+        </button>
+      </div>
+    </nav>
   )
 }
 

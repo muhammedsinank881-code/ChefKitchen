@@ -154,9 +154,7 @@ const MainPage = () => {
         )}
 
       </div>
-      <BottomNav
-        onCartClick={() => setShowCart(true)}
-      />
+      <BottomNav/>
     
     </>
   );
