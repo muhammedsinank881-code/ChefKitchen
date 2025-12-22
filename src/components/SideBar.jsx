@@ -37,7 +37,7 @@ const SideBar = () => {
           <button
             onClick={() => setActiveIndex(index)}
             className={`cursor-pointer rounded-l-2xl relative w-full h-20 flex items-center justify-center
-              ${index === activeIndex ? 'bg-[#1f2433]' : ''}`}
+              ${index === activeIndex ? 'bg-[#252836]' : ''}`}
           >
            <div className={`rounded flex items-center justify-center m-2  w-10 h-10
             ${index === activeIndex ? 'bg-[#FF8D28] shadow-[0px_8px_24px_0px_#EA7C6952]' : ''}`}>
@@ -49,10 +49,10 @@ const SideBar = () => {
             {index === activeIndex && (
               <>
                 <span className="w-5 h-5 bg-[#1F1D2B] z-20 absolute -top-5 right-0 rounded-br-2xl" />
-                <span className="w-5 h-5 bg-[#1f2433] absolute -top-5 right-0" />
+                <span className="w-5 h-5 bg-[#252836] absolute -top-5 right-0" />
 
                 <span className="w-5 h-5 bg-[#1F1D2B] z-20 absolute -bottom-5 right-0 rounded-tr-2xl" />
-                <span className="w-5 h-5 bg-[#1f2433] absolute -bottom-5 right-0" />
+                <span className="w-5 h-5 bg-[#252836] absolute -bottom-5 right-0" />
               </>
               
             )}

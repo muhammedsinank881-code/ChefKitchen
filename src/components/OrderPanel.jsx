@@ -6,12 +6,12 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
   const final = subtotal - subtotal * discount
 
   return (
-    <div className="w-full h-[87vh] md:h-screen max-w-md mx-auto pb-20 z-50 bg-gradient-to-b from-[#1f1d2b] to-[#1a1a25] text-white rounded-t-2xl md:rounded-2xl p-4 md:p-6 shadow-xl flex flex-col">
+    <div className="w-full h-[87vh] md:h-screen max-w-md mx-auto pb-20 z-50 bg-[#1F1D2B] text-white rounded-t-2xl md:rounded-2xl p-4 md:p-6 shadow-xl flex flex-col">
       <div className="flex items-center gap-3 mb-4">
         {onClose && (
           <button
             onClick={onClose}
-            className="w-5 text-orange-400 text-xl font-extrabold"
+            className="w-5 text-[#F99147] text-xl font-extrabold"
           >
             ←
           </button>
@@ -27,8 +27,8 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
             onClick={() => setOrderType(type)}
             className={`px-4 py-2 rounded-xl text-sm border transition ${
               orderType === type
-                ? 'bg-orange-500 border-orange-500 text-white'
-                : 'border-[#3a3f55] text-orange-400 hover:bg-[#2a2f42]'
+                ? 'bg-[#EA7C69] border-[#EA7C69] text-white'
+                : 'border-[#3a3f55] text-[#F99147] hover:bg-[#2a2f42]'
             }`}
           >
             {type}
@@ -37,7 +37,7 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
       </div>
 
       {/* Header */}
-      <div className="grid grid-cols-12 text-sm text-gray-400 pb-3 border-b border-[#2f354a]">
+      <div className="grid grid-cols-12 text-sm pb-3 border-b border-[#2f354a]">
         <div className="col-span-8">Item</div>
         <div className="col-span-2 text-center">Qty</div>
         <div className="col-span-2 text-right">Price</div>
@@ -57,19 +57,17 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
                   </div>
                 </div>
 
-                <div className="col-span-2 flex items-center justify-center gap-2">
+                <div className="col-span-2 flex items-center justify-center">
                   <button
                     onClick={() => updateQty(item.id, item.size, -1)}
-                    className="text-red-400"
                   >
                     -
                   </button>
-                  <span className="w-10 h-10 bg-[#393C49] border border-[#343a52] text-center pt-2 p-4 rounded">
+                  <span className="w-10 h-10 bg-[#2D303E] border border-[#393C49] text-center pt-2 p-4 rounded">
                     {item.qty}
                   </span>
                   <button
                     onClick={() => updateQty(item.id, item.size, 1)}
-                    className="text-green-400"
                   >
                     +
                   </button>
@@ -85,7 +83,7 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
                   <input
                     type="text"
                     placeholder="Order Note..."
-                    className="ml-0.5 h-11 w-full bg-[#393C49] border border-[#343a52] rounded text-[#E0E6E9] text-sm font-normal p-3"
+                    className="ml-0.5 h-11 w-full bg-[#2D303E] border border-[#393C49] rounded text-[#E0E6E9] text-sm font-normal p-3"
                   />
                 </div>
                 <div className="col-span-2 flex items-center justify-end ">
@@ -106,12 +104,12 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
 
       <div className="border-t border-[#2f354a] grid grid-cols-[70%_30%] md:grid-cols-1">
         <div className="mt-2 md:mt-3 space-y-3 text-sm">
-          <div className="flex justify-between text-gray-400">
-            <span>Subtotal</span>
+          <div className="flex justify-between">
+            <span className='text-[#ABBBC2]'>Subtotal</span>
             <span>{subtotal.toFixed(2)} AED</span>
           </div>
-          <div className="flex justify-between text-gray-400">
-            <span>Discount</span>
+          <div className="flex justify-between">
+            <span className='text-[#ABBBC2]'>Discount</span>
             <span>5%</span>
           </div>
           <div className="flex justify-between font-semibold">
@@ -124,7 +122,9 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
           <button
             onClick={onOrder}
             disabled={!cartItems.length}
-            className="h-12 w-full bg-gradient-to-r from-orange-400 to-orange-500 rounded-xl text-sm font-semibold hover:opacity-80 transition active:scale-95 disabled:opacity-40 z-50"
+            className="h-12 w-full bg-[#F99147] shadow-[0px_8px_24px_0px_#EA7C694D]
+             rounded-xl text-sm font-semibold hover:opacity-90 transition active:scale-95 
+             disabled:opacity-40 z-50"
           >
             Place Order
           </button>
