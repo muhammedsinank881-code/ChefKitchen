@@ -1,13 +1,12 @@
 import React from 'react'
-import trashCan from '../assets/mainPage/trashCan.svg'
-
+import Trash from "../assets/trash.svg?react";
 const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderType, setOrderType }) => {
   const discount = 0.05
   const subtotal = cartItems.reduce((s, i) => s + i.qty * i.price, 0)
   const final = subtotal - subtotal * discount
 
   return (
-    <div className="w-full h-[87vh] md:h-screen max-w-md mx-auto pb-20 z-10 bg-gradient-to-b from-[#1f1d2b] to-[#1a1a25] text-white rounded-t-2xl md:rounded-2xl p-4 md:p-6 shadow-xl flex flex-col">
+    <div className="w-full h-[87vh] md:h-screen max-w-md mx-auto pb-20 z-50 bg-gradient-to-b from-[#1f1d2b] to-[#1a1a25] text-white rounded-t-2xl md:rounded-2xl p-4 md:p-6 shadow-xl flex flex-col">
       <div className="flex items-center gap-3 mb-4">
         {onClose && (
           <button
@@ -89,19 +88,21 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
                     className="ml-0.5 h-11 w-full bg-[#393C49] border border-[#343a52] rounded text-[#E0E6E9] text-sm font-normal p-3"
                   />
                 </div>
-                <div className="col-span-2 flex justify-end">
+                <div className="col-span-2 flex items-center justify-end ">
+                  <div className='flex items-center justify-center rounded border border-[#F99147] hover:border-[#FF7CA3] p-2 '>
                   <button
-                    onClick={() => removeItem(item.id, item.size)}
-                    className="border border-[#F99147] rounded hover:border-[#FF7CA3]"
+                    onClick={() => removeItem(item.id, item.size)}                     
                   >
-                    <img src={trashCan} className="p-3" />
+                    <Trash className=" text-[#F99147] hover:text-[#FF7CA3]" />
                   </button>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+
 
       <div className="border-t border-[#2f354a] grid grid-cols-[70%_30%] md:grid-cols-1">
         <div className="mt-2 md:mt-3 space-y-3 text-sm">
@@ -119,13 +120,11 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
           </div>
         </div>
 
-        <div className="mb-8 ml-3 md:ml-0 md:mb-0  flex justify-end">
+        <div className="mb-6 mt-6  ml-3 md:ml-0 md:mb-0  flex items-center justify-center  ">
           <button
             onClick={onOrder}
             disabled={!cartItems.length}
-            className="pl-1 md:pl-0 w-full bg-gradient-to-r from-orange-400 to-orange-500 py-1
-             md:py-3 rounded-xl text-sm font-semibold 
-             hover:opacity-80 transition active:scale-97 disabled:opacity-40"
+            className="h-12 w-full bg-gradient-to-r from-orange-400 to-orange-500 rounded-xl text-sm font-semibold hover:opacity-80 transition active:scale-95 disabled:opacity-40 z-50"
           >
             Place Order
           </button>

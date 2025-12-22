@@ -40,9 +40,9 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
   const isDishInCart = id => cartItems.some(item => item.id === id)
 
   return (
-    <div className="h-screen bg-[#1f2433] text-white p-3 sm:p-6 flex flex-col">
+    <div className="h-screen bg-[#1f2433] text-white p-3 sm:p-6 md:pl-10 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between font-barlow">
+      <div className="flex items-center justify-between font-barlow p">
         <div>
           <h1 className="text-2xl font-bold">Chef Kitchen</h1>
           <p className="text-gray-400 text-sm">
@@ -92,7 +92,7 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
 
       {/* Choose Dishes */}
       <div className="flex items-center justify-between mt-3">
-        <h2 className="text-xl font-semibold">Choose Dishes</h2>
+        <h2 className="text-xl font-semibold md:pl-2">Choose Dishes</h2>
 
         <div className="relative">
           <button
@@ -152,6 +152,7 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
                     <button
                       key={size}
                       onClick={() => handleSizeChange(item.id, size)}
+                      showCart = {true}
                       className={`px-3 py-1 rounded-lg border text-sm ${selectedSize[item.id] === size
                           ? 'bg-orange-500 border-orange-500'
                           : 'border-[#3a405a]'
@@ -178,7 +179,7 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
 
       <button
         onClick={onViewOrder}
-        className="fixed bottom-15 md:bottom-10 right-5 md:right-10 bg-orange-500 px-4 py-4 rounded-full shadow-lg hover:opacity-93"
+        className="fixed bottom-16 md:bottom-10 right-5 md:right-10 bg-orange-500 px-4 py-4 rounded-full shadow-lg hover:opacity-93"
       >
         <FiShoppingCart className="text-white text-2xl" />
         {count > 0 && (

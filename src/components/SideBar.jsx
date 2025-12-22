@@ -32,17 +32,18 @@ const SideBar = () => {
       {buttonCollection.map((Icon, index) => (
         <div
           key={index}
-          className="rounded-l-2xl relative w-full pl-2 h-18 flex items-center justify-center"
+          className="rounded-l-2xl relative w-full pl-2 h-20 flex items-center justify-center"
         >
           <button
             onClick={() => setActiveIndex(index)}
-            className={`cursor-pointer rounded-l-2xl relative w-full h-18 flex items-center justify-center
+            className={`cursor-pointer rounded-l-2xl relative w-full h-20 flex items-center justify-center
               ${index === activeIndex ? 'bg-[#1f2433]' : ''}`}
           >
-           
+           <div className={`rounded flex items-center justify-center m-2  w-10 h-10
+            ${index === activeIndex ? 'bg-[#FF8D28] shadow-[0px_8px_24px_0px_#EA7C6952]' : ''}`}>
             <Icon
               className={`w-5 h-5 ${
-                index === activeIndex ? 'text-white' : 'text-[#F99147]'
+                index === activeIndex ? 'text-white ' : 'text-[#F99147]'
               }`}
             />
             {index === activeIndex && (
@@ -53,7 +54,9 @@ const SideBar = () => {
                 <span className="w-5 h-5 bg-[#1F1D2B] z-20 absolute -bottom-5 right-0 rounded-tr-2xl" />
                 <span className="w-5 h-5 bg-[#1f2433] absolute -bottom-5 right-0" />
               </>
+              
             )}
+            </div>
           </button>
         </div>
       ))}

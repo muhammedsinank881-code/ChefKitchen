@@ -131,6 +131,12 @@ const MainPage = () => {
             onClose={() => setShowCart(false)}
             orderType={orderType}
             setOrderType={setOrderType}
+            onOrder={() => {
+                setOrderPlaced(true);
+                setCartItems([]);
+                setShowCart(true);
+                setTimeout(() => setOrderPlaced(false), 2500);
+              }}
           />
         </div>
 

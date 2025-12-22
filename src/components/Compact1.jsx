@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import ChefLogo from "../assets/ChefLogo.png";
 import ttt from "../assets/img/ttt.svg";
-
+import Trash from "../assets/trash.svg?react";
 const Compact1 = () => {
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const Compact1 = () => {
            gap-3 rounded-xl p-4 bg-[#F99147] shadow-[0px_4px_20px_0px_#EA7C693D]
             hover:bg-[#e67e30] transition active:scale-95"
         >
-          Explore Menu
+          Explore Menu 
         </button>
       </section>
   );
