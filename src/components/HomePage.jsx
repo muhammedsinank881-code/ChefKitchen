@@ -14,15 +14,15 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
   const [activeCategory, setActiveCategory] = useState('today')
 
   const dishes = [
-    { id: 1, name: 'Healthy noodle with spinach leaf', img: noodle, price: 3.29, bowls: 22 },
-    { id: 2, name: 'Hot spicy fried rice with omelet', img: images, price: 3.29, bowls: 13 },
-    { id: 3, name: 'Spicy noodle with special omelette', img: fryedRice, price: 3.29, bowls: 17 },
-    { id: 4, name: 'Healthy noodle with spinach leaf', img: img10, price: 25, bowls: 22 },
-    { id: 5, name: 'Hot spicy fried rice with omelet', img: noodleWithOmlet, price: 25, bowls: 13 },
-    { id: 6, name: 'Spicy noodle with special omelette', img: noodle, price: 25, bowls: 17 },
-    { id: 7, name: 'Spicy seasoned seafood noodles', img: images, price: 25, bowls: 20 },
-    { id: 8, name: 'Salted pasta with mushroom sauce', img: fryedRice, price: 25, bowls: 11 },
-    { id: 9, name: 'Beef dumpling in hot and sour soup', img: img10, price: 25, bowls: 16 },
+    { id: 1, name: 'Healthy noodle with spinach leaf', img: noodle, price: 3.29, bowls: 22 , categories :["today" , "special"] },
+    { id: 2, name: 'Hot spicy fried rice with omelet', img: images, price: 3.29, bowls: 13 , categories: ['south']},
+    { id: 3, name: 'Spicy noodle with special omelette', img: fryedRice, price: 3.29, bowls: 17 ,categories: ['today', ]},
+    { id: 4, name: 'Healthy noodle with spinach leaf', img: img10, price: 25, bowls: 22 , categories: ['today', 'special']},
+    { id: 5, name: 'Hot spicy fried rice with omelet', img: noodleWithOmlet, price: 25, bowls: 13 , categories: ['today', 'special']},
+    { id: 6, name: 'Spicy noodle with special omelette', img: noodle, price: 25, bowls: 17 ,categories: [ 'special'] },
+    { id: 7, name: 'Spicy seasoned seafood noodles', img: images, price: 25, bowls: 20 , categories: [ 'special']},
+    { id: 8, name: 'Salted pasta with mushroom sauce', img: fryedRice, price: 25, bowls: 11 ,categories: ['today', ] },
+    { id: 9, name: 'Beef dumpling in hot and sour soup', img: img10, price: 25, bowls: 16 , categories: ['south']},
   ]
 
   const [selectedSize, setSelectedSize] = useState(
@@ -36,7 +36,10 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
     d.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  const visibleDishes = activeCategory === 'today' ? filteredDishes : []
+ const visibleDishes = filteredDishes. filter (dish => 
+  dish.categories.includes(activeCategory.toLowerCase())
+ )
+
   const isDishInCart = id => cartItems.some(item => item.id === id)
 
   return (
