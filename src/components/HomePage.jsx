@@ -14,15 +14,15 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
   const [activeCategory, setActiveCategory] = useState('today')
 
   const dishes = [
-    { id: 1, name: 'Healthy noodle with spinach leaf', img: noodle, price: 15, bowls: 22 , categories :["today" , "special"] },
-    { id: 2, name: 'Hot spicy fried rice with omelet', img: images, price: 15, bowls: 13 , categories: ['today','south']},
-    { id: 3, name: 'Spicy noodle with special omelette', img: fryedRice, price: 15, bowls: 17 ,categories: ['today', ]},
-    { id: 4, name: 'Healthy noodle with spinach leaf', img: img10, price: 25, bowls: 22 , categories: ['today', 'special']},
-    { id: 5, name: 'Hot spicy fried rice with omelet', img: noodleWithOmlet, price: 25, bowls: 13 , categories: ['today', 'special']},
-    { id: 6, name: 'Spicy noodle with special omelette', img: noodle, price: 25, bowls: 17 ,categories: [ 'special','today'] },
-    { id: 7, name: 'Spicy seasoned seafood noodles', img: images, price: 25, bowls: 20 , categories: [ 'today','special']},
-    { id: 8, name: 'Salted pasta with mushroom sauce', img: fryedRice, price: 25, bowls: 11 ,categories: ['today', ] },
-    { id: 9, name: 'Beef dumpling in hot and sour soup', img: img10, price: 25, bowls: 16 , categories: ['south','today']},
+    { id: 1, name: 'Healthy noodle with spinach leaf', img: noodle, price: 15, bowls: 22, categories: ["today", "special"] },
+    { id: 2, name: 'Hot spicy fried rice with omelet', img: images, price: 15, bowls: 13, categories: ['today', 'south'] },
+    { id: 3, name: 'Spicy noodle with special omelette', img: fryedRice, price: 15, bowls: 17, categories: ['today',] },
+    { id: 4, name: 'Healthy noodle with spinach leaf', img: img10, price: 25, bowls: 22, categories: ['today', 'special'] },
+    { id: 5, name: 'Hot spicy fried rice with omelet', img: noodleWithOmlet, price: 25, bowls: 13, categories: ['today', 'special'] },
+    { id: 6, name: 'Spicy noodle with special omelette', img: noodle, price: 25, bowls: 17, categories: ['special', 'today'] },
+    { id: 7, name: 'Spicy seasoned seafood noodles', img: images, price: 25, bowls: 20, categories: ['today', 'special'] },
+    { id: 8, name: 'Salted pasta with mushroom sauce', img: fryedRice, price: 25, bowls: 11, categories: ['today',] },
+    { id: 9, name: 'Beef dumpling in hot and sour soup', img: img10, price: 25, bowls: 16, categories: ['south', 'today'] },
   ]
 
   const [selectedSize, setSelectedSize] = useState(
@@ -36,11 +36,13 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
     d.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
- const visibleDishes = filteredDishes. filter (dish => 
-  dish.categories.includes(activeCategory.toLowerCase())
- )
+  const visibleDishes = filteredDishes.filter(dish =>
+    dish.categories.includes(activeCategory.toLowerCase())
+  )
 
-  const isDishInCart = id => cartItems.some(item => item.id === id && item.size === size)
+  const isDishInCart = (id, size) => {
+    return cartItems.some(item => item.id === id && item.size === size)
+  }
 
   return (
     <div className="h-screen bg-[#252836] text-white p-3 sm:p-6 md:pl-10 flex flex-col">
@@ -83,8 +85,8 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
               key={key}
               onClick={() => setActiveCategory(key)}
               className={`pb-4 shrink-0 transition ${activeCategory === key
-                  ? 'border-b-2 border-[#F99147] text-[#F99147]'
-                  : 'hover:border-b'
+                ? 'border-b-2 border-[#F99147] text-[#F99147]'
+                : 'hover:border-b'
                 }`}
             >
               {label}
@@ -141,26 +143,33 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
           ) : (
             visibleDishes.map(item => (
               <div key={item.id} className="relative flex items-center flex-col rounded-2xl p-4 text-center bg-[#1F1D2B] mt-16">
-              
+
                 <img src={item.img} className="absolute -top-16 mx-auto h-36 sm:h-44 object-contain" />
                 <h3 className="mt-20 font-medium pt-5">{item.name}</h3>
                 <p className="text-green-400">{item.price.toFixed(2)} AED</p>
                 <p className="text-gray-400 text-sm">{item.bowls} Bowls available</p>
 
                 <div className="flex gap-2 justify-center mt-4">
-                  {['S', 'M', 'L'].map(size => (
-                    <button
-                      key={size}
-                      onClick={() => handleSizeChange(item.id, size)}
-                      showCart = {true}
-                      className={`px-3 py-1 rounded-lg border text-sm ${selectedSize[item.id] === size
-                          ? 'bg-[#F99147] border-[#F99147]'
-                          : 'border-[#3a405a]'
-                        }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
+                  {['S', 'M', 'L'].map(size => {
+                    const isSelected = selectedSize[item.id] === size
+                    const isInCart = isDishInCart(item.id, size)
+
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => handleSizeChange(item.id, size)}
+                        className={`px-3 py-1 rounded-lg border text-sm transition 
+                        ${isInCart
+                            ? 'bg-green-500 border-green-500 text-white'
+                            : isSelected
+                              ? 'bg-[#F99147] border-[#F99147]'
+                              : 'border-[#3a405a]'
+                          }`}
+                      >
+                        {size}
+                      </button>
+                    )
+                  })}
                 </div>
 
                 <button
