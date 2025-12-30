@@ -40,7 +40,7 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
   dish.categories.includes(activeCategory.toLowerCase())
  )
 
-  const isDishInCart = id => cartItems.some(item => item.id === id)
+  const isDishInCart = id => cartItems.some(item => item.id === id && item.size === size)
 
   return (
     <div className="h-screen bg-[#252836] text-white p-3 sm:p-6 md:pl-10 flex flex-col">
@@ -141,8 +141,7 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
           ) : (
             visibleDishes.map(item => (
               <div key={item.id} className="relative flex items-center flex-col rounded-2xl p-4 text-center bg-[#1F1D2B] mt-16">
-              { isDishInCart (item.id) && 
-              <span class="absolute top-5 right-5 w-3 h-3 rounded-full bg-green-400 shadow-[0px_8px_24px_0px_#4ADE804D]"></span>}
+              
                 <img src={item.img} className="absolute -top-16 mx-auto h-36 sm:h-44 object-contain" />
                 <h3 className="mt-20 font-medium pt-5">{item.name}</h3>
                 <p className="text-green-400">{item.price.toFixed(2)} AED</p>
