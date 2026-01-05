@@ -14,15 +14,15 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
   const [activeCategory, setActiveCategory] = useState('today')
 
   const dishes = [
-    { id: 1, name: 'Healthy noodle with spinach leaf', img: noodle, price: 15, bowls: 22, categories: ["today", "special"] },
-    { id: 2, name: 'Hot spicy fried rice with omelet', img: images, price: 15, bowls: 13, categories: ['today', 'south'] },
-    { id: 3, name: 'Spicy noodle with special omelette', img: fryedRice, price: 15, bowls: 17, categories: ['today',] },
-    { id: 4, name: 'Healthy noodle with spinach leaf', img: img10, price: 25, bowls: 22, categories: ['today', 'special'] },
-    { id: 5, name: 'Hot spicy fried rice with omelet', img: noodleWithOmlet, price: 25, bowls: 13, categories: ['today', 'special'] },
-    { id: 6, name: 'Spicy noodle with special omelette', img: noodle, price: 25, bowls: 17, categories: ['special', 'today'] },
-    { id: 7, name: 'Spicy seasoned seafood noodles', img: images, price: 25, bowls: 20, categories: ['today', 'special'] },
-    { id: 8, name: 'Salted pasta with mushroom sauce', img: fryedRice, price: 25, bowls: 11, categories: ['today',] },
-    { id: 9, name: 'Beef dumpling in hot and sour soup', img: img10, price: 25, bowls: 16, categories: ['south', 'today'] },
+    { id: 1, name: 'Healthy noodle with spinach leaf', img: noodle, price :{ S:12 , M:15 , L:18}, bowls: 22, categories: ["today", "special"] },
+    { id: 2, name: 'Hot spicy fried rice with omelet', img: images, price: { S:12 , M:15 , L:18}, bowls: 13, categories: ['today', 'south'] },
+    { id: 3, name: 'Spicy noodle with special omelette', img: fryedRice, price: { S:12 , M:15 , L:18}, bowls: 17, categories: ['today',] },
+    { id: 4, name: 'Healthy noodle with spinach leaf', img: img10, price: { S:22 , M:25 , L:28}, bowls: 22, categories: ['today', 'special'] },
+    { id: 5, name: 'Hot spicy fried rice with omelet', img: noodleWithOmlet, price: { S:22 , M:25 , L:28}, bowls: 13, categories: ['today', 'special'] },
+    { id: 6, name: 'Spicy noodle with special omelette', img: noodle, price: { S:22 , M:25 , L:28}, bowls: 17, categories: ['special', 'today'] },
+    { id: 7, name: 'Spicy seasoned seafood noodles', img: images, price: { S:22 , M:25 , L:28}, bowls: 20, categories: ['today', 'special'] },
+    { id: 8, name: 'Salted pasta with mushroom sauce', img: fryedRice, price: { S:22 , M:25 , L:28}, bowls: 11, categories: ['today',] },
+    { id: 9, name: 'Beef dumpling in hot and sour soup', img: img10, price: { S:22 , M:25 , L:28}, bowls: 16, categories: ['south', 'today'] },
   ]
 
   const [selectedSize, setSelectedSize] = useState(
@@ -39,6 +39,11 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
   const visibleDishes = filteredDishes.filter(dish =>
     dish.categories.includes(activeCategory.toLowerCase())
   )
+
+  const selectedSizePrize = (dish) => {
+    const size = selectedSize[dish.id]
+    return dish.price[size]
+  }
 
   const isDishInCart = (id, size) => {
     return cartItems.some(item => item.id === id && item.size === size)
@@ -146,7 +151,7 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
 
                 <img src={item.img} className="absolute -top-16 mx-auto h-36 sm:h-44 object-contain" />
                 <h3 className="mt-20 font-medium pt-5">{item.name}</h3>
-                <p className="text-green-400">{item.price.toFixed(2)} AED</p>
+                <p className="text-green-400">{selectedSizePrize(item).toFixed(2)} AED</p>
                 <p className="text-gray-400 text-sm">{item.bowls} Bowls available</p>
 
                 <div className="flex gap-2 justify-center mt-4">
@@ -174,7 +179,10 @@ const HomePage = ({ onViewOrder, onAddToCart, count, showCart, orderType, setOrd
 
                 <button
                   disabled={!item.bowls}
-                  onClick={() => onAddToCart(item, selectedSize[item.id])}
+                  onClick={() => onAddToCart({
+                    ...item,
+                    price :selectedSizePrize(item),
+                  }, selectedSize[item.id])}
                   className={`mt-3 w-full py-2 rounded-lg font-semibold transition active:scale-97 ${item.bowls ? 'bg-[#F99147] hover:opacity-90' : 'bg-[#393C49] '
                     }`}
                 >
