@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Vector from '../assets/Logo.png'
 import HomeIcon from '../assets/icons/HomeIcon.jsx'
 import CouponIcon from '../assets/icons/CouponIcon.jsx'
-import WhiteListIcon from '../assets/icons/WhiteListIcon.jsx'
+import WhiteListIcon from '../assets/icons/CouponIcon.jsx'
 import EmailIcon from '../assets/icons/EmailIcon.jsx'
 import NotificationIcon from '../assets/icons/NotificationIcon.jsx'
 import exit from '../assets/img/exit.svg'
@@ -24,7 +24,7 @@ const SideBar = () => {
     <nav className="hidden md:flex w-24 min-h-screen bg-[#1F1D2B] flex-col items-center py-6 gap-6 fixed">
       
       {/* Logo */}
-      <div className=" w-10 h-10 flex items-center justify-center">
+      <div className=" w-12 h-12 flex items-center justify-center">
         <img src={Vector} alt="Chef Kitchen Logo" className="object-contain" />
       </div>
 
@@ -62,7 +62,8 @@ const SideBar = () => {
       ))}
 
       {/* Exit */}
-      <div className="mt-auto pb-4">
+
+           <div className="mt-auto pb-4">
         <button
           onClick={() => navigate('/')}
           className="flex items-center justify-center hover:bg-[#1f2433] px-4 py-5 rounded-xl"

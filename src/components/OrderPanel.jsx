@@ -1,7 +1,15 @@
 import React from 'react'
+import { useCart } from './CartContext';
+import { useOrder } from './OrderContext';
 import Trash from "../assets/trash.svg?react";
-const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderType, setOrderType }) => {
-  const discount = 0.05
+
+
+const OrderPanel = ({ onClose, onOrder }) => {
+
+const { cartItems, updateQty, removeItem } = useCart();
+const { orderType, setOrderType } = useOrder();
+
+const discount = 0.05
   const subtotal = cartItems.reduce((s, i) => s + i.qty * i.price, 0)
   const final = subtotal - subtotal * discount
 
@@ -25,11 +33,10 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
           <button
             key={type}
             onClick={() => setOrderType(type)}
-            className={`px-4 py-2 rounded-xl text-sm border transition ${
-              orderType === type
+            className={`px-4 py-2 rounded-xl text-sm border transition ${orderType === type
                 ? 'bg-[#EA7C69] border-[#EA7C69] text-white'
                 : 'border-[#3a3f55] text-[#F99147] hover:bg-[#2a2f42]'
-            }`}
+              }`}
           >
             {type}
           </button>
@@ -88,11 +95,11 @@ const OrderPanel = ({ cartItems, updateQty, removeItem, onClose, onOrder, orderT
                 </div>
                 <div className="col-span-2 flex items-center justify-end ">
                   <div className='flex items-center justify-center rounded border border-[#F99147] hover:border-[#FF7CA3] p-2 '>
-                  <button
-                    onClick={() => removeItem(item.id, item.size)}                     
-                  >
-                    <Trash className=" text-[#F99147] hover:text-[#FF7CA3]" />
-                  </button>
+                    <button
+                      onClick={() => removeItem(item.id, item.size)}
+                    >
+                      <Trash className=" text-[#F99147] hover:text-[#FF7CA3]" />
+                    </button>
                   </div>
                 </div>
               </div>

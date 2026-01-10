@@ -6,61 +6,8 @@ import BottomNav from "./BottomNav";
 
 const MainPage = () => {
   const [showCart, setShowCart] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
   const startY = useRef(0)
   const [orderPlaced, setOrderPlaced] = useState(false);
-
-  // buttons connect
-  const [ orderType , setOrderType ] = useState ("Dine In")
-
-  //  ADD TO CART
-  const addToCart = (dish, size) => {
-    setCartItems((prev) => {
-      const existing = prev.find(
-        (item) => item.id === dish.id && item.size === size
-      );
-
-      if (existing) {
-        return prev.map((item) =>
-          item.id === dish.id && item.size === size
-            ? { ...item, qty: item.qty + 1 }
-            : item
-        );
-      }
-
-      return [
-        ...prev,
-        {
-          id: dish.id,
-          name: dish.name,
-          price: parseFloat(dish.price),
-          img: dish.img,
-          size,
-          qty: 1,
-        },
-      ];
-    });
-  };
-
-  //  UPDATE QTY
-  const updateQty = (id, size, delta) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) =>
-          item.id === id && item.size === size
-            ? { ...item, qty: item.qty + delta }
-            : item
-        )
-        .filter((item) => item.qty > 0)
-    );
-  };
-
-  //  REMOVE ITEM
-  const removeItem = (id, size) => {
-    setCartItems((prev) =>
-      prev.filter((item) => !(item.id === id && item.size === size))
-    );
-  };
 
   return (
     <>
@@ -75,12 +22,7 @@ const MainPage = () => {
           >
             <HomePage
               onViewOrder={() => setShowCart(true)}
-              onAddToCart={addToCart}
               showCart ={ showCart}
-              count={cartItems.reduce((a, c) => a + c.qty, 0)}
-              orderType = { orderType }
-              setOrderType = { setOrderType }
-              cartItems = { cartItems }
             />
             </div>
           
@@ -91,11 +33,6 @@ const MainPage = () => {
                          
                          ${showCart ? "translate-x-0" : "translate-x-full"}`} >
             <OrderPanel
-              cartItems={cartItems}
-              updateQty={updateQty}
-              removeItem={removeItem}
-              orderType={ orderType}
-              setOrderType={ setOrderType }
               onClose={() => setShowCart(false)}
               onOrder={() => {
                 setOrderPlaced(true);
@@ -125,12 +62,7 @@ const MainPage = () => {
         >
 
           <OrderPanel
-            cartItems={cartItems}
-            updateQty={updateQty}
-            removeItem={removeItem}
             onClose={() => setShowCart(false)}
-            orderType={orderType}
-            setOrderType={setOrderType}
             onOrder={() => {
                 setOrderPlaced(true);
                 setCartItems([]);
