@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useCart } from "./CartContext";
 import SideBar from "./SideBar";
 import HomePage from "./HomePage";
 import OrderPanel from "./OrderPanel";
@@ -8,6 +9,18 @@ const MainPage = () => {
   const [showCart, setShowCart] = useState(false);
   const startY = useRef(0)
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const {clearCart} = useCart ()
+
+  const handleOrder = () => {
+  setOrderPlaced(true);
+  clearCart();
+  setShowCart(false);
+
+  setTimeout(() => {
+    setOrderPlaced(false);
+  }, 2000);
+};
+
 
   return (
     <>
@@ -28,18 +41,16 @@ const MainPage = () => {
           
           {/* Desktop slide-in cart */}
           <div
-            className={`hidden md:block absolute top-0 right-0 h-screen w-[380px] bg-transparent
-                         transform transition-transform duration-300 ease-in-out
-                         
-                         ${showCart ? "translate-x-0" : "translate-x-full"}`} >
+             className={`
+    fixed md:absolute
+    top-0 right-0 z-40
+    h-screen w-full md:w-[380px]
+    transform transition-transform duration-300
+    ${showCart ? "translate-x-0" : "translate-x-full"}
+  `} >
             <OrderPanel
               onClose={() => setShowCart(false)}
-              onOrder={() => {
-                setOrderPlaced(true);
-                setCartItems([]);
-                setShowCart(true);
-                setTimeout(() => setOrderPlaced(false), 2500);
-              }}
+              onOrder={ handleOrder }
             />    
           </div>
         </div>
@@ -63,12 +74,7 @@ const MainPage = () => {
 
           <OrderPanel
             onClose={() => setShowCart(false)}
-            onOrder={() => {
-                setOrderPlaced(true);
-                setCartItems([]);
-                setShowCart(true);
-                setTimeout(() => setOrderPlaced(false), 2500);
-              }}
+            onOrder={{ handleOrder }}
           />
         </div>
 
