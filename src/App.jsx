@@ -18,7 +18,7 @@ const App = () => {
             <Route path="/" element={<Compact1 />} />
             <Route path="/mainPage" element={<MainPage />} />
             <Route path="/orderPanel" element={<OrderPanel />} />
-            <Route path="/admin" element={<Dashbord />} />
+            <Route path="/admin" element={<Dashbord/>} />
           </Routes>
           </OrderStoreProvider>
         </DishesProvider>
