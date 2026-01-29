@@ -10,4 +10,11 @@ export default defineConfig({
     tailwindcss(),
     svgr(),
   ],
+
+   server: {
+    historyApiFallback: true,
+  },
+   build: {
+    rollupOptions: {},
+  }
 })
