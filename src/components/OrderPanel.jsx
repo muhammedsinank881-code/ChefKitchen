@@ -4,13 +4,26 @@ import { useOrder } from "./OrderContext";
 import { useOrderStore } from "../contexts/OrderStoreContext";
 import { v4 as uuidv4 } from "uuid";
 import Trash from "../assets/trash.svg?react";
+import { useDishes } from "./DishContext";
 
 
 const OrderPanel = ({ onClose, onOrder }) => {
   const { cartItems, updateQty, removeItem } = useCart();
   const { orderType, setOrderType } = useOrder();
+  const { dishes } = useDishes()
 
   const { addOrder } = useOrderStore();
+
+  const getStockForDish = (id) => {
+    const dish = dishes.find(d => d.id === id);
+    return dish ? dish.bowls : 0;
+  };
+
+  const getCartQty = (id, size) => {
+    return cartItems
+      .filter(item => item.id === id && item.size === size)
+      .reduce((total, i) => total + i.qty, 0);
+  };
 
 
   const discount = 0.05;
@@ -18,8 +31,8 @@ const OrderPanel = ({ onClose, onOrder }) => {
   const final = subtotal - subtotal * discount;
 
   const handlePlaceOrder = () => {
-  onOrder(cartItems); 
-};
+    onOrder(cartItems);
+  };
 
   return (
     <div className="w-full h-screen max-w-md mx-auto pb-20 z-50 bg-[#1F1D2B] text-white rounded-t-2xl md:rounded-2xl p-4 md:p-6 shadow-xl flex flex-col">
@@ -43,11 +56,10 @@ const OrderPanel = ({ onClose, onOrder }) => {
           <button
             key={type}
             onClick={() => setOrderType(type)}
-            className={`px-4 py-2 rounded-xl text-sm border transition ${
-              orderType === type
+            className={`px-4 py-2 rounded-xl text-sm border transition ${orderType === type
                 ? "bg-[#EA7C69] border-[#EA7C69] text-white"
                 : "border-[#3a3f55] text-[#F99147] hover:bg-[#2a2f42]"
-            }`}
+              }`}
           >
             {type}
           </button>
@@ -91,8 +103,22 @@ const OrderPanel = ({ onClose, onOrder }) => {
                     {item.qty}
                   </span>
                   <button
-                    className="text-lg"
-                    onClick={() => updateQty(item.id, item.size, 1)}
+                    className={`text-lg ${
+                      getCartQty(item.id , item.size) >= getStockForDish(item.id)
+                      ?"text-gray-500 " :""
+                    }`}
+                    disabled={getCartQty(item.id , item.size)>= getStockForDish(item.id)}
+                    onClick={() => {
+                      const stock = getStockForDish(item.id);
+                      const currentQty = getCartQty(item.id, item.size);
+
+                      if (currentQty >= stock) {
+                        alert("Not enough stock left!");
+                        return;
+                      }
+
+                      updateQty(item.id, item.size, 1);
+                    }}
                   >
                     +
                   </button>
