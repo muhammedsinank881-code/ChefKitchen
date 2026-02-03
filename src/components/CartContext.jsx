@@ -12,6 +12,10 @@ export const CartProvider = ({ children }) => {
       );
 
       if (existing) {
+        if(existing.qty +1 >dish.bowls){
+          return prev
+        }
+        
         return prev.map(item =>
           item.id === dish.id && item.size === size
             ? { ...item, qty: item.qty + 1 }

@@ -18,7 +18,6 @@ export const DishesProvider = ({ children }) => {
     ];
   });
 
-  // Save categories
   useEffect(() => {
     localStorage.setItem("categories", JSON.stringify(categories));
   }, [categories]);
@@ -74,9 +73,6 @@ export const DishesProvider = ({ children }) => {
   const deleteDish = (id) =>
     setDishes(prev => prev.filter(d => d.id !== id));
 
-  // ----------------------------------------------------
-  // CRUD — CATEGORIES
-  // ----------------------------------------------------
   const addCategory = (name) => {
     // prevent duplicates
     if (categories.some(c => c.name.toLowerCase() === name.toLowerCase()))
@@ -105,6 +101,16 @@ export const DishesProvider = ({ children }) => {
     );
   };
 
+  const reduceStock = (dishId , qty) => {
+    setDishes ( prev =>
+      prev.map(d => 
+        d.id === dishId 
+        ? {...d ,bowls : d.bowls - qty}
+        :d
+      )
+    )
+  }
+
   return (
     <DishesContext.Provider
       value={{
@@ -117,6 +123,8 @@ export const DishesProvider = ({ children }) => {
         addCategory,
         editCategory,
         deleteCategory,
+
+        reduceStock
       }}
     >
       {children}

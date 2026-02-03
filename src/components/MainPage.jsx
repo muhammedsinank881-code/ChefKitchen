@@ -11,13 +11,14 @@ const MainPage = () => {
   const [orderPlaced, setOrderPlaced] = useState(false);
   const startY = useRef(0);
   const [showPayment, setShowPayment] = useState(false);
-
+  const [itemsForPayment, setItemsForPayment] = useState([]);
 
   const { clearCart , cartItems } = useCart();
 
-  const handleOrder = () => {
+  const handleOrder = (items) => {
     setShowCart(false);
     setShowPayment(true)
+    setItemsForPayment(items)
 
     setTimeout(() => {
       setOrderPlaced(false);

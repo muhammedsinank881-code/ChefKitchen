@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Card from "../../assets/payment/card.svg?react";
 import Paypal from "../../assets/payment/paypal.svg?react";
 import Cash from "../../assets/payment/cash.svg?react";
-
+import { useDishes } from "../DishContext";
 import { useOrderStore } from "../../contexts/OrderStoreContext";
 import { useOrder } from "../OrderContext";
 import { v4 as uuidv4 } from "uuid";
@@ -11,6 +11,7 @@ const Payment = ({ onClose, onPayment, itemsFromCart }) => {
 
   const { addOrder } = useOrderStore();
   const { orderType } = useOrder();
+  const { reduceStock } = useDishes ()
 
   const paymentIcons = [
     { id: 1, img: Card, name: "Credit Card" },
@@ -22,11 +23,14 @@ const Payment = ({ onClose, onPayment, itemsFromCart }) => {
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
 
-  // 💰 CALCULATE TOTALS USING itemsFromCart (NOT cartItems!)
   const subtotal = itemsFromCart.reduce((s, i) => s + i.qty * i.price, 0);
   const final = subtotal - subtotal * 0.05;
 
   const handleConfirmPayment = () => {
+
+    itemsFromCart.forEach( item => {
+      reduceStock(item.id , item.qty)
+    })
     const newOrder = {
       id: uuidv4(),
       date: new Date().toISOString(),
@@ -54,8 +58,8 @@ const Payment = ({ onClose, onPayment, itemsFromCart }) => {
   };
 
   return (
-    <div className="flex bg-transparent items-center justify-center">
-      <div className="min-w-max h-screen bg-[#1F1D2B] flex flex-col px-6 justify-center md:pb-100 ">
+    <div className="flex bg-transparent items-center justify-center ">
+      <div className="min-w-max h-screen bg-[#1F1D2B] flex flex-col px-6 justify-center ">
 
         {/* HEADER */}
         <div className="border-b border-[#2F354A] pb-4">
@@ -74,7 +78,7 @@ const Payment = ({ onClose, onPayment, itemsFromCart }) => {
                 onClick={() => setSelected(item.id)}
                 className={`
                   relative flex flex-col items-center justify-center 
-                  bg-[#2A2839] border rounded-xl w-28 py-5 cursor-pointer 
+                  bg-[#2A2839] border rounded-xl w-24 md:w-28 py-5 cursor-pointer 
                   hover:bg-[#343246] transition
                   ${
                     selected === item.id

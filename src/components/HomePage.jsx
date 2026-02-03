@@ -14,9 +14,7 @@ const HomePage = ({ onViewOrder, showCart }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [activeCategory, setActiveCategory] = useState("all");
-
   const [selectedSize, setSelectedSize] = useState({});
 
   useEffect(() => {
@@ -34,24 +32,29 @@ const HomePage = ({ onViewOrder, showCart }) => {
 
   const visibleDishes = filteredDishes.filter((dish) => {
     if (activeCategory === "all") return true;
-
     if (!Array.isArray(dish.categoryIds)) return false;
-
     return dish.categoryIds.includes(activeCategory);
   });
 
   const selectedSizePrize = (dish) => {
     const size = selectedSize[dish.id];
-     if (!dish.price || dish.price[size] == null || isNaN(dish.price[size])) {
-    return 0;
-  }
+    if (!dish.price || dish.price[size] == null || isNaN(dish.price[size])) {
+      return 0;
+    }
 
-     return Number(dish.price[size]);
+    return Number(dish.price[size]);
   };
 
   const isDishInCart = (id, size) => {
     return cartItems.some(item => item.id === id && item.size === size);
   };
+
+  const getCartQtyForDish = (id, size) => {
+    return cartItems
+      .filter(item => item.id === id && item.size === size)
+      .reduce((total, item) => total + item.qty, 0);
+  };
+
 
   return (
     <div className="h-screen bg-[#252836] text-white p-3 sm:p-6 md:pl-10 flex flex-col">
@@ -90,11 +93,10 @@ const HomePage = ({ onViewOrder, showCart }) => {
           {/* ALL */}
           <button
             onClick={() => setActiveCategory("all")}
-            className={`pb-4 shrink-0 transition px-3 ${
-              activeCategory === "all"
-                ? "border-b-2 border-[#F99147] text-[#F99147]"
-                : "hover:border-b"
-            }`}
+            className={`pb-4 shrink-0 transition px-3 ${activeCategory === "all"
+              ? "border-b-2 border-[#F99147] text-[#F99147]"
+              : "hover:border-b"
+              }`}
           >
             All
           </button>
@@ -104,11 +106,10 @@ const HomePage = ({ onViewOrder, showCart }) => {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`pb-4 shrink-0 transition ${
-                activeCategory === cat.id
-                  ? "border-b-2 border-[#F99147] text-[#F99147]"
-                  : "hover:border-b"
-              }`}
+              className={`pb-4 shrink-0 transition ${activeCategory === cat.id
+                ? "border-b-2 border-[#F99147] text-[#F99147]"
+                : "hover:border-b"
+                }`}
             >
               {cat.name}
             </button>
@@ -128,9 +129,8 @@ const HomePage = ({ onViewOrder, showCart }) => {
           >
             {orderType}
             <svg
-              className={`h-4 w-4 transition-transform ${
-                isOpen ? "rotate-180" : ""
-              }`}
+              className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""
+                }`}
               viewBox="0 0 24 24"
               stroke="currentColor"
               fill="none"
@@ -145,9 +145,8 @@ const HomePage = ({ onViewOrder, showCart }) => {
                 <button
                   key={type}
                   onClick={() => (setOrderType(type), setIsOpen(false))}
-                  className={`w-full text-left px-4 py-2 text-sm ${
-                    orderType === type ? "text-orange-400" : "text-gray-300"
-                  }`}
+                  className={`w-full text-left px-4 py-2 text-sm ${orderType === type ? "text-orange-400" : "text-gray-300"
+                    }`}
                 >
                   {type}
                 </button>
@@ -160,11 +159,10 @@ const HomePage = ({ onViewOrder, showCart }) => {
       {/* Dish Cards */}
       <div className="mt-1 flex-1 overflow-y-auto pr-2 no-scrollbar">
         <div
-          className={`grid grid-cols-2 gap-4 sm:gap-6 ${
-            showCart
-              ? "md:grid-cols-2 lg:grid-cols-3"
-              : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-          }`}
+          className={`grid grid-cols-2 gap-4 sm:gap-6 ${showCart
+            ? "md:grid-cols-2 lg:grid-cols-3"
+            : "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            }`}
         >
           {visibleDishes.length === 0 ? (
             <p className="text-gray-400 col-span-full text-center">No dishes found</p>
@@ -184,6 +182,9 @@ const HomePage = ({ onViewOrder, showCart }) => {
                   {selectedSizePrize(item).toFixed(2)} AED
                 </p>
                 <p className="text-gray-400 text-sm">{item.bowls} Bowls available</p>
+                {item.bowls < 5 && item.bowls > 0 && (
+                  <p className="text-sm text-red-500 font-semibold">! Low Stock</p>
+                )}
 
                 {/* S M L */}
                 <div className="flex gap-2 justify-center mt-4">
@@ -194,38 +195,51 @@ const HomePage = ({ onViewOrder, showCart }) => {
                     return (
                       <button
                         key={size}
+                        disabled={!item.bowls}
                         onClick={() => handleSizeChange(item.id, size)}
-                        className={`px-3 py-1 rounded-lg border text-sm transition ${
-                          isInCart
+                        className={`px-3 py-1 rounded-lg border text-sm transition 
+                        ${!item.bowls ? "opacity-40 cursor-not-allowed" : ""}
+                        ${isInCart
                             ? "bg-green-500 border-green-500 text-white"
                             : isSelected
-                            ? "bg-[#F99147] border-[#F99147]"
-                            : "border-[#3a405a]"
-                        }`}
+                              ? "bg-[#F99147] border-[#F99147]"
+                              : "border-[#3a405a]"
+                          }
+      `}
                       >
                         {size}
                       </button>
                     );
+
                   })}
                 </div>
 
                 {/* Add to cart */}
                 <button
-                  disabled={!item.bowls}
-                  onClick={() =>
+                  disabled={getCartQtyForDish(item.id, selectedSize[item.id]) >= item.bowls}
+                  onClick={() => {
+                    const currentQty = getCartQtyForDish(item.id, selectedSize[item.id]);
+
+                    if (currentQty >= item.bowls) {
+                      alert("Not enough stock!");
+                      return;
+                    }
+
                     addToCart(
                       { ...item, price: selectedSizePrize(item) },
                       selectedSize[item.id]
-                    )
-                  }
-                  className={`mt-3 w-full py-2 rounded-lg font-semibold transition active:scale-97 ${
-                    item.bowls
+                    );
+                  }}
+                  className={`mt-3 w-full py-2 rounded-lg font-semibold transition active:scale-97 ${item.bowls
                       ? "bg-[#F99147] hover:opacity-90"
                       : "bg-[#393C49]"
-                  }`}
+                    }`}
                 >
-                  {item.bowls ? "Add to Order" : "Sold Out"}
+                  {getCartQtyForDish(item.id, selectedSize[item.id]) >= item.bowls
+                    ? "Out of Stock"
+                    : "Add to Order"}
                 </button>
+
               </div>
             ))
           )}
