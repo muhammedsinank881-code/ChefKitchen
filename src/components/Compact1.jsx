@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import ChefLogo from "../assets/ChefLogo.png";
 import ttt from "../assets/img/ttt.svg";
-import Trash from "../assets/trash.svg?react";
+
 const Compact1 = () => {
   const navigate = useNavigate();
 

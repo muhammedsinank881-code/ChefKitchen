@@ -18,20 +18,8 @@ const OrderPanel = ({ onClose, onOrder }) => {
   const final = subtotal - subtotal * discount;
 
   const handlePlaceOrder = () => {
-  const order = {
-    id: uuidv4(),
-    date: new Date().toISOString(),
-    orderType,
-    items: cartItems,
-    subtotal,
-    final,
-    status: "Pending",
-  };
-
-  addOrder(order);
-  onOrder();
+  onOrder(cartItems); 
 };
-
 
   return (
     <div className="w-full h-screen max-w-md mx-auto pb-20 z-50 bg-[#1F1D2B] text-white rounded-t-2xl md:rounded-2xl p-4 md:p-6 shadow-xl flex flex-col">

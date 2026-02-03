@@ -1,23 +1,23 @@
-// src/components/MainPage.jsx
-
 import React, { useState, useRef } from "react";
 import { useCart } from "./CartContext";
 import SideBar from "./SideBar";
 import HomePage from "./HomePage";
 import OrderPanel from "./OrderPanel";
 import BottomNav from "./BottomNav";
+import Payment from "./Payment/Payment";
 
 const MainPage = () => {
   const [showCart, setShowCart] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const startY = useRef(0);
+  const [showPayment, setShowPayment] = useState(false);
 
-  const { clearCart } = useCart();
+
+  const { clearCart , cartItems } = useCart();
 
   const handleOrder = () => {
-    setOrderPlaced(true);
-    clearCart();
     setShowCart(false);
+    setShowPayment(true)
 
     setTimeout(() => {
       setOrderPlaced(false);
@@ -55,6 +55,23 @@ const MainPage = () => {
               onOrder={handleOrder}
             />
           </div>
+          {showPayment && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+    <div className="scale-100 animate-fadeIn">
+      <Payment 
+      onClose={() => setShowPayment(false)}
+      onPayment={()=> {
+        clearCart()
+        setOrderPlaced(true)
+        setShowPayment(false)
+        setTimeout(() => setOrderPlaced(false), 2000);
+      }} 
+      itemsFromCart={cartItems}
+      />
+    </div>
+  </div>
+)}
+
         </div>
 
         {/* ORDER PLACED POPUP */}

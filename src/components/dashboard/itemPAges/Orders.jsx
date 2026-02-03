@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { useOrderStore } from "../../../contexts/OrderStoreContext";
+import { useNavigate } from "react-router-dom";
 
 const Orders = () => {
   const { orders, deleteOrder } = useOrderStore();
   const [search, setSearch] = useState("")
+  const navigate = useNavigate()
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+
   const matchesSearch = (order) => {
     const term = search.toLowerCase();
+
 
     return (
       order.id.toLowerCase().includes(term) ||
@@ -16,6 +22,19 @@ const Orders = () => {
     );
   };
 
+  const paymentMethod = (method) => {
+    switch (method) {
+      case 1:
+        return "Credit Card"
+      case 2:
+        return "Paypal"
+      case 3:
+        return "Cash"
+      default:
+        return "Unknown"
+    }
+  }
+
   const filtered = orders.filter(matchesSearch)
 
   return (
@@ -25,7 +44,7 @@ const Orders = () => {
         <input type="text"
           placeholder="Search... "
           value={search}
-          onChange={(e)=>setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           className="w-full mb-4 p-2 border border-gray-200 rounded-md" />
       </div>
 
@@ -36,10 +55,7 @@ const Orders = () => {
             <tr>
               <th className="p-4">Order ID</th>
               <th className="p-4">Date</th>
-              <th className="p-4">Type</th>
-              <th className="p-4">Items</th>
-              <th className="p-4">Total (AED)</th>
-              <th className="p-4">Status</th>
+              <th className="p-4">Details</th>
               <th className="p-4">Actions</th>
             </tr>
           </thead>
@@ -69,27 +85,14 @@ const Orders = () => {
                   </span>
                 </td>
 
-                <td className="p-4 hidden md:flex">
-                  {order.orderType}</td>
 
                 <td className="p-4 md:table-cell flex md:block justify-between">
-                  <span>
-                    <span className="md:hidden font-semibold">Items: </span>
-                    {order.items.length} items
-                  </span>
-                  <span className="md:hidden font-semibold">
-                    Total: {Number(order.final || 0).toFixed(2)}
-                  </span>
-                </td>
-
-                <td className="p-4 hidden md:table-cell">
-                  {Number(order.final || 0).toFixed(2)}
-                </td>
-
-                <td className="p-4 md:table-cell flex md:block justify-between">
-                  <span className="px-2 py-1 bg-yellow-200 text-yellow-800 rounded-full text-xs font-semibold">
-                    {order.status}
-                  </span>
+                  <button
+                    onClick={() => setSelectedOrder(order)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded-md text-xs hover:bg-blue-600"
+                  >
+                    View
+                  </button>
                   <span className="md:hidden"><button
                     onClick={() => deleteOrder(order.id)}
                     className="text-red-600 hover:text-red-800"
@@ -112,6 +115,61 @@ const Orders = () => {
           </tbody>
 
         </table>
+        {selectedOrder && (
+          <div className="
+      fixed inset-0 bg-transparent bg-opacity-40 
+      backdrop-blur-sm flex items-center justify-center
+      z-50
+  ">
+            <div className="bg-white p-6 rounded-xl w-11/12 md:w-1/2 shadow-xl relative">
+
+              <button
+                onClick={() => setSelectedOrder(null)}
+                className="absolute top-3 right-3 text-gray-600 hover:text-black text-xl"
+              >
+                ✕
+              </button>
+
+              <h2 className="text-xl font-semibold mb-3">
+                Order Details - {selectedOrder.id.slice(0, 8)}
+              </h2>
+
+              <div className="flex flex-row justify-between">
+                <p><b>Date:</b> {new Date(selectedOrder.date).toLocaleString()}</p>
+                <p><b>Type:</b> {selectedOrder.orderType}</p>
+              </div>
+              <p><b>Total:</b> {selectedOrder.final} AED</p>
+
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold mb-2">Items</h3>
+
+                {selectedOrder.items?.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-4 p-3 border-b last:border-none"
+                  >
+                    <img
+                      src={item.img}
+                      alt={item.name}
+                      className="w-16 h-16 rounded-lg object-cover"
+                    />
+
+                    <div className="flex-1">
+                      <p className="font-semibold">{item.name}</p>
+                      <p className="text-gray-600 text-sm">Price: {item.price} AED</p>
+                      <p className="text-gray-600 text-sm">Qty: {item.qty}</p>
+                    </div>
+
+                    <p className="font-semibold">{item.qty * item.price} AED</p>
+                  </div>
+                ))}
+              </div>
+
+
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { OrderProvider } from "./components/OrderContext";
 import Dashbord from "./components/dashboard/Dashbord";
 import { DishesProvider } from './components/DishContext'
 import { OrderStoreProvider } from "./contexts/OrderStoreContext";
+import Payment from "./components/Payment/Payment";
 
 const App = () => {
   return (
@@ -18,14 +19,13 @@ const App = () => {
             <Route path="/" element={<Compact1 />} />
             <Route path="/mainPage" element={<MainPage />} />
             <Route path="/orderPanel" element={<OrderPanel />} />
+            <Route path="/payment" element={<Payment/>}/>
             <Route path="/admin" element={<Dashbord/>} />
           </Routes>
           </OrderStoreProvider>
         </DishesProvider>
       </OrderProvider>
     </CartProvider>
-
-
   );
 };
 

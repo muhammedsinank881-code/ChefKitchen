@@ -31,9 +31,7 @@ const HomePage = ({ onViewOrder, showCart }) => {
     d.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // -----------------------------------------
-  // Category Filter (safe for old dishes)
-  // -----------------------------------------
+
   const visibleDishes = filteredDishes.filter((dish) => {
     if (activeCategory === "all") return true;
 
