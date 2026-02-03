@@ -1,10 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import ChefLogo from "../assets/ChefLogo.png";
 import ttt from "../assets/img/ttt.svg";
+import Login from "./login/Login";
 
 const Compact1 = () => {
-  const navigate = useNavigate();
+  const [showLogin , setShowLogin] = useState(false)
 
   return (
       <section className="relative flex flex-col items-center gap-5 p-4 pt-12 pb-12 bg-black text-white overflow-hidden">
@@ -40,13 +40,18 @@ const Compact1 = () => {
 
         {/* Button */}
         <button
-          onClick={() => navigate("/mainPage")}
+          onClick={() => setShowLogin(true)}
           className="z-10 mt-auto mb-6 w-92 h-13 flex items-center justify-center font-monserrat
            gap-3 rounded-xl p-4 bg-[#F99147] shadow-[0px_4px_20px_0px_#EA7C693D]
             hover:bg-[#e67e30] transition active:scale-95"
         >
           Explore Menu 
         </button>
+        {showLogin && (
+          <div className="fixed inset-0 flex items-center justify-center z-50 backdrop:blur-sm">
+            <Login onClose={()=> setShowLogin(false)} />
+          </div>
+        )}
       </section>
   );
 };

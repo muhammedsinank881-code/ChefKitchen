@@ -1,5 +1,3 @@
-// src/components/HomePage.jsx
-
 import React, { useState, useEffect } from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import { useCart } from "./CartContext";
@@ -49,9 +47,9 @@ const HomePage = ({ onViewOrder, showCart }) => {
     return cartItems.some(item => item.id === id && item.size === size);
   };
 
-  const getCartQtyForDish = (id, size) => {
+  const getCartQtyForDish = (id) => {
     return cartItems
-      .filter(item => item.id === id && item.size === size)
+      .filter(item => item.id === id)
       .reduce((total, item) => total + item.qty, 0);
   };
 
@@ -216,9 +214,9 @@ const HomePage = ({ onViewOrder, showCart }) => {
 
                 {/* Add to cart */}
                 <button
-                  disabled={getCartQtyForDish(item.id, selectedSize[item.id]) >= item.bowls}
+                  disabled={getCartQtyForDish(item.id) >= item.bowls}
                   onClick={() => {
-                    const currentQty = getCartQtyForDish(item.id, selectedSize[item.id]);
+                    const currentQty = getCartQtyForDish(item.id);
 
                     if (currentQty >= item.bowls) {
                       alert("Not enough stock!");
@@ -235,7 +233,7 @@ const HomePage = ({ onViewOrder, showCart }) => {
                       : "bg-[#393C49]"
                     }`}
                 >
-                  {getCartQtyForDish(item.id, selectedSize[item.id]) >= item.bowls
+                  {getCartQtyForDish(item.id) >= item.bowls
                     ? "Out of Stock"
                     : "Add to Order"}
                 </button>

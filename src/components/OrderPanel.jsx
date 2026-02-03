@@ -21,7 +21,7 @@ const OrderPanel = ({ onClose, onOrder }) => {
 
   const getCartQty = (id, size) => {
     return cartItems
-      .filter(item => item.id === id && item.size === size)
+      .filter(item => item.id === id)
       .reduce((total, i) => total + i.qty, 0);
   };
 
@@ -104,13 +104,13 @@ const OrderPanel = ({ onClose, onOrder }) => {
                   </span>
                   <button
                     className={`text-lg ${
-                      getCartQty(item.id , item.size) >= getStockForDish(item.id)
+                      getCartQty(item.id) >= getStockForDish(item.id)
                       ?"text-gray-500 " :""
                     }`}
-                    disabled={getCartQty(item.id , item.size)>= getStockForDish(item.id)}
+                    disabled={getCartQty(item.id)>= getStockForDish(item.id)}
                     onClick={() => {
                       const stock = getStockForDish(item.id);
-                      const currentQty = getCartQty(item.id, item.size);
+                      const currentQty = getCartQty(item.id);
 
                       if (currentQty >= stock) {
                         alert("Not enough stock left!");
